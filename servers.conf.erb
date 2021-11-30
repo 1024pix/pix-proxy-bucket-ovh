@@ -1,0 +1,26 @@
+log_format keyvalue
+  'method=$request_method'
+  ' path="$request_uri"'
+  ' host=$host'
+  ' request_id=$http_x_request_id'
+  ' from="$remote_addr"'
+  ' protocol=$scheme'
+  ' status=$status'
+  ' duration=${request_time}s'
+  ' bytes=$bytes_sent'
+  ' referer="$http_referer"'
+  ' user_agent="$http_user_agent"';
+
+access_log off;
+
+server {
+  server_name localhost;
+  listen <%= ENV['PORT'] %>;
+
+  charset utf-8;
+  access_log logs/access.log keyvalue;
+  
+  location / {
+      proxy_pass <%= ENV["OVH_BUCKET_URL"] %>;
+  }
+}
