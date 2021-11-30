@@ -3,7 +3,7 @@ log_format keyvalue
   ' path="$request_uri"'
   ' host=$host'
   ' request_id=$http_x_request_id'
-  ' from="$remote_addr"'
+  ' from="$realip_remote_addr"'
   ' protocol=$scheme'
   ' status=$status'
   ' duration=${request_time}s'
