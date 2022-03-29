@@ -32,6 +32,8 @@ server {
   access_log logs/access.log keyvalue;
   
   location / {
+      proxy_hide_header 'access-control-allow-origin';
+
       add_header 'access-control-allow-origin' * always;
 
       proxy_pass <%= ENV["OVH_BUCKET_URL"] %>;
