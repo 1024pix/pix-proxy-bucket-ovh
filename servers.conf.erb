@@ -30,6 +30,8 @@ server {
 
   charset utf-8;
   access_log logs/access.log keyvalue;
+
+  port_in_redirect off;
   
   location / {
       proxy_hide_header 'access-control-allow-origin';
