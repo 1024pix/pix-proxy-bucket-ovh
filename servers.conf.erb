@@ -35,7 +35,7 @@ server {
   
   location / {
       proxy_hide_header 'access-control-allow-origin';
-      proxy_buffering off;
+      proxy_buffer_size 8k;
 
       add_header 'access-control-allow-origin' * always;
 
