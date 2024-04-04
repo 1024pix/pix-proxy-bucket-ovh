@@ -40,7 +40,7 @@ server {
       add_header 'access-control-allow-origin' * always;
 
       #proxy_pass https://buckets<%= ENV["OVH_BUCKET_PATH"] %>;
-      proxy_pass https://<%= ENV["OVH_BUCKET_HOST"] %>:443<%= ENV["OVH_BUCKET_PATH"] %>;
+      proxy_pass https://<%= ENV["OVH_BUCKET_HOST"] %>:443/<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
   }
 }
