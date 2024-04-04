@@ -1,5 +1,6 @@
 log_format keyvalue
   'method=$request_method'
+  '"$http_referer" "$http_user_agent" "$proxy_add_x_forwarded_for"'
   ' path="$request_uri"'
   ' host=$host'
   ' request_id=$http_x_request_id'
