@@ -23,7 +23,7 @@ log_format keyvalue
 
 access_log off;
 
-upstream bucket {
+upstream bucket_url {
     server <%= ENV["OVH_BUCKET_HOST"] %>:443 max_fails=<%= ENV['NGINX_UPSTREAM_MAX_FAILS'] || 3 %> fail_timeout=<%= ENV['NGINX_UPSTREAM_FAIL_TIMEOUT'] || '5s' %>;
 }
 
@@ -39,7 +39,7 @@ server {
 
       add_header 'access-control-allow-origin' * always;
 
-      proxy_pass https://bucket<%= ENV["OVH_BUCKET_PATH"] %>;
+      proxy_pass https://bucket_url<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
   }
 }
