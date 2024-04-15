@@ -39,8 +39,7 @@ server {
       proxy_hide_header 'access-control-allow-origin';
 
       add_header 'access-control-allow-origin' * always;
-      set $bucket bucket_url;
-      proxy_pass https://$bucket<%= ENV["OVH_BUCKET_PATH"] %>;
+      proxy_pass https://bucket_url<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
   }
 }
