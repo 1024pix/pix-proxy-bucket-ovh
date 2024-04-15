@@ -1,3 +1,4 @@
+server_names_hash_bucket_size 64;
 log_format keyvalue
   'method=$request_method'
   '"$http_referer" "$http_user_agent" "$proxy_add_x_forwarded_for"'
@@ -34,7 +35,6 @@ server {
   listen <%= ENV['PORT'] %>;
 
   charset utf-8;
-  server_names_hash_bucket_size 64;
   location / {
       proxy_hide_header 'access-control-allow-origin';
 
