@@ -1,5 +1,7 @@
+server_names_hash_bucket_size 1024;
 log_format keyvalue
   'method=$request_method'
+  '"$http_referer" "$http_user_agent" "$proxy_add_x_forwarded_for"'
   ' path="$request_uri"'
   ' host=$host'
   ' request_id=$http_x_request_id'
@@ -23,7 +25,7 @@ log_format keyvalue
 
 access_log off;
 
-upstream bucket {
+upstream bucket_url {
     server <%= ENV["OVH_BUCKET_HOST"] %>:443 max_fails=<%= ENV['NGINX_UPSTREAM_MAX_FAILS'] || 3 %> fail_timeout=<%= ENV['NGINX_UPSTREAM_FAIL_TIMEOUT'] || '5s' %>;
 }
 
@@ -33,13 +35,11 @@ server {
   listen <%= ENV['PORT'] %>;
 
   charset utf-8;
-  
   location / {
       proxy_hide_header 'access-control-allow-origin';
 
       add_header 'access-control-allow-origin' * always;
-
-      proxy_pass https://bucket<%= ENV["OVH_BUCKET_PATH"] %>;
+      proxy_pass https://bucket_url<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
   }
 }
