@@ -52,6 +52,7 @@ server {
       add_header 'access-control-allow-origin' * always;
       
       proxy_hide_header Cache-Control;
+      proxy_hide_header Pragma;
       add_header Cache-Control "public, max-age=172800";
 
       proxy_pass https://bucket<%= ENV["OVH_BUCKET_PATH"] %>;
