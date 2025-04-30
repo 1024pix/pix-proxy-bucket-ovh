@@ -34,10 +34,23 @@ server {
 
   charset utf-8;
   
+  location /robots.txt {
+      try_files /robots.txt =404;
+  }
+  
+  location /api/* {
+      return 404;
+  }
+
+  location ~* .(/favicon.ico|/apple-touch-icon.png|/apple-touch-icon-precomposed.png)$ {
+      return 404;
+  }
+
   location / {
       proxy_hide_header 'access-control-allow-origin';
 
       add_header 'access-control-allow-origin' * always;
+      add_header Cache-Control "public, max-age=172800";
 
       proxy_pass https://bucket<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
