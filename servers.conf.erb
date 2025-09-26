@@ -58,4 +58,8 @@ server {
       proxy_pass https://bucket<%= ENV["OVH_BUCKET_PATH"] %>;
       proxy_buffering off;
   }
+
+  location = / {
+    return 404;
+  }
 }
