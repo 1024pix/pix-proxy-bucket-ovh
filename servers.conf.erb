@@ -29,7 +29,7 @@ upstream bucket {
 
 map '$request_method $http_origin' $allow_cors {
     '~^OPTIONS https://([^/]+\.pix\.(fr|org|digital))$'    OPTIONS;
-    '~^(GET|POST) https://([^/]+\.pix\.(fr|org|digital))$' GET|POST;
+    '~^GET https://([^/]+\.pix\.(fr|org|digital))$'        GET;
     default 0;
 }
 
@@ -55,7 +55,32 @@ server {
   location / {
       proxy_hide_header 'access-control-allow-origin';
 
-      add_header 'access-control-allow-origin' * always;
+      if ($allow_cors = OPTIONS) {
+          # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin#cors_and_caching
+          add_header 'Vary' 'Origin' always;
+          add_header 'Access-Control-Allow-Origin' $http_origin;
+          add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS';
+          #
+          # Custom headers and headers various browsers *should* be OK with but aren't
+          #
+          add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+          #
+          # Tell client that this pre-flight info is valid for 20 days
+          #
+          # add_header 'Access-Control-Max-Age' 86400;
+          # add_header 'Content-Type' 'text/plain; charset=utf-8';
+          # add_header 'Content-Length' 0;
+          return 204;
+      }
+
+      if ($allow_cors = GET) {
+          # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin#cors_and_caching
+          add_header 'Vary' 'Origin' always;
+          add_header 'Access-Control-Allow-Origin' $http_origin always;
+          add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+          add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+          add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+      }
 
       proxy_hide_header Cache-Control;
       proxy_hide_header Pragma;
